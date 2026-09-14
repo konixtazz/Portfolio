@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tom Delperier — Développeur web & e-commerce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F4EF;
+    --paper-alt:#EAEBE4;
+    --ink:#14171C;
+    --ink-soft:#4B5058;
+    --line:#D8D9D1;
+    --tag:#FF5A22;
+    --tag-ink:#3A1200;
+    --teal:#0E7C7B;
+    --white:#FFFFFF;
+    --radius:2px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    line-height:1.05;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  img{max-width:100%;display:block;}
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  @media (max-width:640px){
+    .wrap{padding:0 20px;}
+  }
+
+  /* ---------- Skip link / focus ---------- */
+  a:focus-visible, button:focus-visible, .filter-btn:focus-visible{
+    outline:2px solid var(--tag);
+    outline-offset:2px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(243,244,239,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:76px;
+  }
+
+  .brand{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.15rem;
+  }
+
+  .brand span{color:var(--tag);}
+
+  .nav-links{
+    display:flex;
+    gap:28px;
+    font-size:0.95rem;
+    color:var(--ink-soft);
+  }
+
+  .nav-links a:hover{color:var(--ink);}
+
+  .nav-cta{
+    background:var(--ink);
+    color:var(--paper);
+    padding:10px 18px;
+    border-radius:var(--radius);
+    font-size:0.9rem;
+    font-weight:500;
+  }
+
+  .nav-toggle{
+    display:none;
+    background:none;
+    border:none;
+    font-size:1.6rem;
+    cursor:pointer;
+    color:var(--ink);
+  }
+
+  @media (max-width:760px){
+    .nav-links{
+      position:fixed;
+      top:76px;
+      left:0;
+      right:0;
+      background:var(--paper);
+      flex-direction:column;
+      gap:0;
+      border-bottom:1px solid var(--line);
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+    }
+    .nav-links.open{max-height:320px;}
+    .nav-links a{
+      padding:16px 32px;
+      width:100%;
+      border-top:1px solid var(--line);
+    }
+    .nav-cta{display:none;}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- Hero as a "product listing" ---------- */
+  .hero{
+    padding:72px 0 56px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:56px;
+    align-items:start;
+  }
+
+  @media (max-width:840px){
+    .hero-grid{grid-template-columns:1fr;gap:36px;}
+  }
+
+  .sku{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    padding:5px 10px;
+    border-radius:var(--radius);
+    margin-bottom:20px;
+  }
+
+  .sku::before{
+    content:"";
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--teal);
+  }
+
+  .hero h1{
+    font-size:clamp(2.4rem,5vw,3.6rem);
+    margin-bottom:18px;
+  }
+
+  .hero p.lede{
+    font-size:1.15rem;
+    color:var(--ink-soft);
+    max-width:520px;
+    margin-bottom:28px;
+  }
+
+  .hero-actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:13px 22px;
+    border-radius:var(--radius);
+    font-weight:500;
+    font-size:0.95rem;
+    border:1px solid var(--ink);
+  }
+
+  .btn-solid{
+    background:var(--ink);
+    color:var(--paper);
+  }
+
+  .btn-solid:hover{background:#000;}
+
+  .btn-outline{
+    background:transparent;
+    color:var(--ink);
+  }
+
+  .btn-outline:hover{background:var(--white);}
+
+  /* spec card, like a product info box */
+  .spec-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px;
+  }
+
+  .spec-card .spec-title{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin-bottom:16px;
+  }
+
+  .spec-row{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-top:1px solid var(--line);
+    font-size:0.95rem;
+  }
+
+  .spec-row:first-of-type{border-top:none;}
+
+  .spec-row span:first-child{color:var(--ink-soft);}
+
+  .spec-row span:last-child{font-weight:500;text-align:right;}
+
+  /* ---------- Section titles ---------- */
+  .section{
+    padding:72px 0;
+    border-bottom:1px solid var(--line);
+  }
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:40px;
+    flex-wrap:wrap;
+  }
+
+  .section-head h2{
+    font-size:clamp(1.8rem,3.2vw,2.4rem);
+  }
+
+  .section-head .count{
+    color:var(--ink-soft);
+    font-size:0.95rem;
+    padding-bottom:6px;
+  }
+
+  /* ---------- Filters ---------- */
+  .filters{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:36px;
+  }
+
+  .filter-btn{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    padding:9px 16px;
+    border-radius:var(--radius);
+    font-size:0.88rem;
+    font-family:'Inter',sans-serif;
+    cursor:pointer;
+    transition:background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .filter-btn:hover{border-color:var(--ink);color:var(--ink);}
+
+  .filter-btn.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+
+  /* ---------- Project catalog grid ---------- */
+  .catalog{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+
+  @media (max-width:900px){
+    .catalog{grid-template-columns:repeat(2,1fr);}
+  }
+
+  @media (max-width:600px){
+    .catalog{grid-template-columns:1fr;}
+  }
+
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 28px -18px rgba(20,23,28,0.35);
+  }
+
+  .card-media{
+    position:relative;
+    height:190px;
+    background:linear-gradient(135deg,var(--paper-alt),var(--paper));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-bottom:1px solid var(--line);
+  }
+
+  .card-media .ph{
+    font-family:'Fraunces',serif;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    text-align:center;
+    padding:0 24px;
+  }
+
+  .card-tag{
+    position:absolute;
+    top:14px;
+    left:14px;
+    background:var(--tag);
+    color:var(--white);
+    font-size:0.72rem;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:var(--radius);
+  }
+
+  .card-body{padding:22px;}
+
+  .card-ref{
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+
+  .card-body h3{
+    font-size:1.2rem;
+    margin-bottom:8px;
+  }
+
+  .card-body p{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    margin-bottom:16px;
+  }
+
+  .stack-list{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+
+  .stack-list span{
+    font-size:0.75rem;
+    border:1px solid var(--line);
+    padding:4px 8px;
+    border-radius:var(--radius);
+    color:var(--ink-soft);
+  }
+
+  .card-link{
+    font-size:0.9rem;
+    font-weight:500;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:2px;
+  }
+
+  /* ---------- About / skills ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:56px;
+  }
+
+  @media (max-width:840px){
+    .about-grid{grid-template-columns:1fr;gap:36px;}
+  }
+
+  .about-grid p{
+    color:var(--ink-soft);
+    margin-bottom:16px;
+    max-width:480px;
+  }
+
+  .skill-block{margin-bottom:26px;}
+
+  .skill-block h4{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin-bottom:12px;
+    font-weight:500;
+  }
+
+  .skill-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .skill-tags span{
+    background:var(--white);
+    border:1px solid var(--line);
+    padding:8px 14px;
+    border-radius:var(--radius);
+    font-size:0.88rem;
+  }
+
+  /* ---------- Timeline (formation) ---------- */
+  .timeline{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+  }
+
+  .t-row{
+    display:grid;
+    grid-template-columns:140px 1fr;
+    gap:24px;
+    padding:22px 0;
+    border-top:1px solid var(--line);
+  }
+
+  .t-row:first-child{border-top:none;}
+
+  @media (max-width:600px){
+    .t-row{grid-template-columns:1fr;gap:6px;}
+  }
+
+  .t-date{
+    color:var(--ink-soft);
+    font-size:0.9rem;
+  }
+
+  .t-row h3{font-size:1.05rem;margin-bottom:4px;}
+
+  .t-row p{color:var(--ink-soft);font-size:0.92rem;}
+
+  /* ---------- Contact ---------- */
+  .contact{
+    background:var(--ink);
+    color:var(--paper);
+  }
+
+  .contact .section-head h2{color:var(--paper);}
+
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+  }
+
+  @media (max-width:760px){
+    .contact-grid{grid-template-columns:1fr;}
+  }
+
+  .contact p{color:#B9BCC3;max-width:440px;margin-bottom:24px;}
+
+  .contact-list{list-style:none;}
+
+  .contact-list li{
+    display:flex;
+    justify-content:space-between;
+    padding:16px 0;
+    border-top:1px solid rgba(255,255,255,0.14);
+    font-size:0.95rem;
+  }
+
+  .contact-list li:first-child{border-top:none;}
+
+  .contact-list span:first-child{color:#8B8E97;}
+
+  .contact-list a:hover{text-decoration:underline;}
+
+  .contact .btn-solid{
+    background:var(--tag);
+    border-color:var(--tag);
+    color:var(--white);
+  }
+
+  .contact .btn-solid:hover{background:#e64d18;}
+
+  footer{
+    padding:26px 0;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    background:var(--ink);
+    border-top:1px solid rgba(255,255,255,0.1);
+  }
+
+  footer p{color:#8B8E97;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">Tom Delperier <span>·</span> dev web</div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#projets">Projets</a>
+      <a href="#profil">Profil</a>
+      <a href="#formation">Formation</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="nav-cta">Me contacter</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu">☰</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="sku">Disponible pour une alternance dès août</div>
+      <h1>Développeur web en alternance,<br>spécialisé e-commerce.</h1>
+      <p class="lede">Je conçois et maintiens des boutiques en ligne et des sites vitrines — de l'intégration front-end à la gestion de catalogue produit. En 2ème année de Bachelor Chef de Projet Digital, je cherche une entreprise pour m'accompagner sur la suite de ma formation.</p>
+      <div class="hero-actions">
+        <a href="#projets" class="btn btn-solid">Voir mes projets</a>
+        <a href="#contact" class="btn btn-outline">Télécharger mon CV</a>
+      </div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-title">Fiche profil</div>
+      <div class="spec-row"><span>Formation</span><span>Bachelor Chef de Projet Digital — 2e année</span></div>
+      <div class="spec-row"><span>Recherche</span><span>Contrat d'apprentissage, à pourvoir en août</span></div>
+      <div class="spec-row"><span>Spécialité</span><span>Développement e-commerce & sites web</span></div>
+      <div class="spec-row"><span>Outils</span><span>PrestaShop, Shopify, WordPress, HTML/CSS/JS</span></div>
+      <div class="spec-row"><span>Localisation</span><span>Manche (50) — mobile dans le département</span></div>
+      <div class="spec-row"><span>LinkedIn</span><span><a href="https://www.linkedin.com/in/tom-delperier-3104903b5" target="_blank" rel="noopener">Voir le profil</a></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="projets">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Catalogue de projets</h2>
+      <div class="count">6 réalisations</div>
+    </div>
+
+    <div class="filters" role="tablist" aria-label="Filtrer les projets">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      <button class="filter-btn" data-filter="ecommerce">E-commerce</button>
+      <button class="filter-btn" data-filter="vitrine">Site vitrine</button>
+      <button class="filter-btn" data-filter="webapp">Application web</button>
+    </div>
+
+    <div class="catalog" id="catalog">
+
+      <article class="card" data-cat="ecommerce">
+        <div class="card-media">
+          <div class="ph">Capture d'écran de la page catalogue produits<br>— à remplacer par ton visuel</div>
+          <span class="card-tag">E-commerce</span>
+        </div>
+        <div class="card-body">
+          <div class="card-ref">Réf. PRJ-01</div>
+          <h3>Refonte boutique en ligne PrestaShop</h3>
+          <p>Migration d'un thème par défaut vers un design sur-mesure, réorganisation du catalogue et optimisation du tunnel de commande.</p>
+          <div class="stack-list"><span>PrestaShop</span><span>PHP</span><span>SCSS</span></div>
+          <a href="#" class="card-link">Voir le détail du projet</a>
+        </div>
+      </article>
+
+      <article class="card" data-cat="ecommerce">
+        <div class="card-media">
+          <div class="ph">Capture de la fiche produit<br>— à remplacer par ton visuel</div>
+          <span class="card-tag">E-commerce</span>
+        </div>
+        <div class="card-body">
+          <div class="card-ref">Réf. PRJ-02</div>
+          <h3>Boutique Shopify pour une marque locale</h3>
+          <p>Personnalisation d'un thème Shopify, intégration des moyens de paiement et connexion à une marketplace.</p>
+          <div class="stack-list"><span>Shopify</span><span>Liquid</span><span>JavaScript</span></div>
+          <a href="#" class="card-link">Voir le détail du projet</a>
+        </div>
+      </article>
+
+      <article class="card" data-cat="vitrine">
+        <div class="card-media">
+          <div class="ph">Capture de la page d'accueil<br>— à remplacer par ton visuel</div>
+          <span class="card-tag">Site vitrine</span>
+        </div>
+        <div class="card-body">
+          <div class="card-ref">Réf. PRJ-03</div>
+          <h3>Site vitrine pour un artisan local</h3>
+          <p>Conception d'un site one-page responsive avec formulaire de contact et prise de rendez-vous en ligne.</p>
+          <div class="stack-list"><span>HTML</span><span>CSS</span><span>WordPress</span></div>
+          <a href="#" class="card-link">Voir le détail du projet</a>
+        </div>
+      </article>
+
+      <article class="card" data-cat="webapp">
+        <div class="card-media">
+          <div class="ph">Capture du tableau de bord<br>— à remplacer par ton visuel</div>
+          <span class="card-tag">Application web</span>
+        </div>
+        <div class="card-body">
+          <div class="card-ref">Réf. PRJ-04</div>
+          <h3>Outil interne de suivi de commandes</h3>
+          <p>Application web permettant de suivre l'état des commandes et de gérer les stocks en temps réel.</p>
+          <div class="stack-list"><span>JavaScript</span><span>Node.js</span><span>API REST</span></div>
+          <a href="#" class="card-link">Voir le détail du projet</a>
+        </div>
+      </article>
+
+      <article class="card" data-cat="ecommerce">
+        <div class="card-media">
+          <div class="ph">Capture de la landing page<br>— à remplacer par ton visuel</div>
+          <span class="card-tag">E-commerce</span>
+        </div>
+        <div class="card-body">
+          <div class="card-ref">Réf. PRJ-05</div>
+          <h3>Landing page de lancement produit</h3>
+          <p>Page de vente dédiée au lancement d'un nouveau produit, pensée pour la conversion et le suivi des performances.</p>
+          <div class="stack-list"><span>WooCommerce</span><span>PHP</span><span>Google Analytics</span></div>
+          <a href="#" class="card-link">Voir le détail du projet</a>
+        </div>
+      </article>
+
+      <article class="card" data-cat="vitrine">
+        <div class="card-media">
+          <div class="ph">Capture du site portfolio<br>— à remplacer par ton visuel</div>
+          <span class="card-tag">Site vitrine</span>
+        </div>
+        <div class="card-body">
+          <div class="card-ref">Réf. PRJ-06</div>
+          <h3>Site portfolio pour un photographe</h3>
+          <p>Galerie photo optimisée pour le chargement rapide des images, avec un système de filtre par catégorie.</p>
+          <div class="stack-list"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+          <a href="#" class="card-link">Voir le détail du projet</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="profil">
+  <div class="wrap about-grid">
+    <div>
+      <h2>Profil</h2>
+    </div>
+    <div>
+      <p>Curieux et débrouillard, j'aime comprendre comment un site fonctionne de bout en bout — de l'intégration d'une maquette jusqu'à la gestion d'un catalogue produit. Mon Bachelor Chef de Projet Digital m'a donné une double compétence : je sais développer, mais aussi organiser un projet web et dialoguer avec des équipes marketing ou commerciales.</p>
+      <p>Je cherche une entreprise pour ma 2ème année d'alternance, avec une préférence pour les projets liés à l'e-commerce : création, maintenance ou évolution de boutiques en ligne.</p>
+
+      <div class="skill-block">
+        <h4>Développement</h4>
+        <div class="skill-tags">
+          <span>HTML / CSS</span><span>JavaScript</span><span>PHP</span><span>PrestaShop</span><span>Shopify</span><span>WordPress</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h4>Gestion de projet</h4>
+        <div class="skill-tags">
+          <span>Cahier des charges</span><span>Suivi de projet</span><span>Relation client</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h4>Outils</h4>
+        <div class="skill-tags">
+          <span>Git</span><span>Figma</span><span>Google Analytics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="formation">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Parcours & formation</h2>
+    </div>
+    <div class="timeline">
+      <div class="t-row">
+        <div class="t-date">2025 — 2026</div>
+        <div>
+          <h3>Bachelor Chef de Projet Digital — 2e année</h3>
+          <p>Alternance recherchée à partir d'août, dans une entreprise ou une agence orientée développement e-commerce.</p>
+        </div>
+      </div>
+      <div class="t-row">
+        <div class="t-date">2024 — 2025</div>
+        <div>
+          <h3>Bachelor Chef de Projet Digital — 1ère année</h3>
+          <p>Apprentissage du développement web, des CMS e-commerce et des fondamentaux de la gestion de projet digital.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section contact" id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Contact</h2>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <p>Disponible pour un entretien ou une visite dans votre entreprise. N'hésitez pas à me contacter pour toute question sur mon profil ou mes projets.</p>
+        <a href="mailto:tom.delperier@exemple.fr" class="btn btn-solid">M'envoyer un email</a>
+      </div>
+      <ul class="contact-list">
+        <li><span>Email</span><a href="mailto:tom.delperier@exemple.fr">tom.delperier@exemple.fr</a></li>
+        <li><span>Téléphone</span><a href="tel:+33600000000">06 00 00 00 00</a></li>
+        <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/tom-delperier-3104903b5" target="_blank" rel="noopener">tom-delperier</a></li>
+        <li><span>Localisation</span><span>Manche (50)</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Tom Delperier — Portfolio développeur web & e-commerce</p>
+  </div>
+</footer>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        card.style.display = (filter === 'all' || card.dataset.cat === filter) ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
